@@ -1,6 +1,6 @@
 {
   "name": "kob",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Kob",
   "author": "Snowuly",
   "license": "MIT",
@@ -9,10 +9,15 @@
     "nunjucks": "^1.3.4",
     "path-to-regexp": "^1.2.0"
   },
-	"scripts": {
-		"go": "gogo"
-	},
-  "bin": {
-    "kob": "./bin/run"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chentony/kob.git"
+  },
+  "keywords": [
+    "koa",
+    "web",
+    "app",
+    "http",
+    "framework"
+  ]
 }
