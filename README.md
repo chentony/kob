@@ -16,16 +16,26 @@ var app = kob();
 
 // router
 
-app.get('/', function* () { 
+app.get('/:name', function* (name) {
   this.render('template.html', { // using nunjucks
-    key: 'value'
+    name: name
   });
 });
 
 // same as koa
 
-app.use(function *(){
+app.use(function* (){
   this.body = 'Hello World';
+});
+
+
+// auto compose middlewares
+
+
+app.use(function* () {
+  this.body = 'Hi'
+}, function* () {
+  this.body += ' Tony!';
 });
 
 app.listen(3000);
