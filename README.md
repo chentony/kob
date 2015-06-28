@@ -17,7 +17,7 @@ var app = kob();
 // router
 
 app.get('/:name', function* (name) {
-  this.render('template.html', { // using nunjucks
+  yield* this.render('template.html', { // using nunjucks
     name: name
   });
 });
