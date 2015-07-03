@@ -5,25 +5,25 @@ var path2reg = require('path-to-regexp');
 var template = require('nunjucks');
 var util = require('util');
 
+
 function router (method, path,/* middlewares */ fn) {
   var reg = path2reg(path);
-  var args = Array.prototype.slice.call(arguments, 2);
+  var middlewares = Array.prototype.slice.call(arguments, 2, -1);
+  fn = arguments[arguments.length - 1];
   return function* (next) {
     var m; 
     if (this.method === method && (m = reg.exec(this.path))) {
-      if (args.length === 1) { // no middlewares
+      if (middlewares.length === 0) { // no middlewares
         yield* fn.apply(this, m.slice(1));
         return;
       }
-      // handle middlewares
-      fn = args.pop(); 
-
-      m.shift();m.unshift(this);
-      args.push(fn.bind.apply(fn, m));// pass the rounter path parameters to the last middleware
-
-      yield* compose.apply(null, args).call(this, next);
+      /*
+       *  handle middlewares
+       */
+      m[0] = this; // pass the router path parameters to the last middleware
+      yield* compose.apply(null, middlewares.concat([fn.bind.apply(fn, m)])).call(this, next);
     } else {
-      yield next;
+      yield* next;
     }
 
   };
@@ -72,12 +72,12 @@ kob.prototype.use = function () {
 };
 
 kob.prototype.get = function (path, fn) {
-  this.use(router.apply(null, ['GET'].concat(Array.prototype.slice.call(arguments))));
+  koa.prototype.use.call(this, router.apply(null, ['GET'].concat(Array.prototype.slice.call(arguments))));
   return this;
 };
 
 kob.prototype.post = function (path, fn) {
-  this.use(router.apply(null, ['POST'].concat(Array.prototype.slice.call(arguments))));
+  koa.prototype.use.call(this, router.apply(null, ['POST'].concat(Array.prototype.slice.call(arguments))));
   return this;
 };
 
