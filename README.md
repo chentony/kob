@@ -14,6 +14,20 @@ $ npm install kob
 var kob = require('kob');
 var app = kob();
 
+// same as koa
+
+app.use(function* (){
+  this.body = 'Hello World';
+});
+
+// auto compose middlewares
+
+app.use(function* () {
+  this.body = 'Hi'
+}, function* () {
+  this.body += ' Tony!';
+});
+
 // router
 
 app.get('/:name', function* (name) {
@@ -22,21 +36,14 @@ app.get('/:name', function* (name) {
   });
 });
 
-// same as koa
+// support middlewares while using router
 
-app.use(function* (){
-  this.body = 'Hello World';
+app.get('/:name', function* (next){
+  this.hello = 'Hi ';
+}, function* (name, next) {
+  this.body = this.hello + name;
 });
 
-
-// auto compose middlewares
-
-
-app.use(function* () {
-  this.body = 'Hi'
-}, function* () {
-  this.body += ' Tony!';
-});
 
 app.listen(3000);
 ```
