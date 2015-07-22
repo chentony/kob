@@ -68,17 +68,15 @@ function kob(opts) {
 }
 
 kob.prototype.use = function () {
-  koa.prototype.use.call(this, compose.apply(null, arguments));
+  return koa.prototype.use.call(this, compose.apply(null, arguments));
 };
 
 kob.prototype.get = function (path, fn) {
-  koa.prototype.use.call(this, router.apply(null, ['GET'].concat(Array.prototype.slice.call(arguments))));
-  return this;
+  return koa.prototype.use.call(this, router.apply(null, ['GET'].concat(Array.prototype.slice.call(arguments))));
 };
 
 kob.prototype.post = function (path, fn) {
-  koa.prototype.use.call(this, router.apply(null, ['POST'].concat(Array.prototype.slice.call(arguments))));
-  return this;
+  return koa.prototype.use.call(this, router.apply(null, ['POST'].concat(Array.prototype.slice.call(arguments))));
 };
 
 module.exports = kob;
