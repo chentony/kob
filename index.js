@@ -12,7 +12,7 @@ function router (method, path,/* middlewares */ fn) {
   fn = arguments[arguments.length - 1];
   return function* (next) {
     var m; 
-    if (this.method === method && (m = reg.exec(this.path))) {
+    if (this.method === method && (m = reg.exec(decodeURI(this.path)))) {
       if (middlewares.length === 0) { // no middlewares
         yield* fn.apply(this, m.slice(1));
         return;
